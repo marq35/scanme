@@ -8,4 +8,5 @@ How to run this up:
 4. Set up virtual environment - it is good practice
 5. Run command in main directory of app: pip install -r requirement.txt
 6. Execute command: python manage.py db upgrade (migrations directory added to repo)
-6. To run this app execute command in main directory of app: python manage.py runserver --host 0.0.0.0
+6. To run this app execute command in main directory of app:
+   python manage.py runserver --host 0.0.0.0
