@@ -11,7 +11,8 @@ def register():
     form = UserRegistration()
     if form.validate_on_submit():
         user = User(email=form.email.data,
-                    username=form.email.data)
+                    username=form.email.data,
+                    password=form.password.data)
         db.session.add(user)
         flash('You can now login.')
         return redirect(url_for('auth.login'))
