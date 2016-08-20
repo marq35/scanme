@@ -1,1 +1,1 @@
-web: gunicorn scanme.wsgi --log-file -
+web: gunicorn app:app
