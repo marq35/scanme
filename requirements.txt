@@ -20,5 +20,3 @@ virtualenv==15.0.1
 visitor==0.1.2
 Werkzeug==0.10.4
 WTForms==1.0.5
-gunicorn==18.0
-psycopg2==2.5.1
