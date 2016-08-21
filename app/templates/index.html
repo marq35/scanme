@@ -4,6 +4,23 @@
 {% block title %}ScanMe{% endblock %}
 
 {% block page_content %}
+<div class="page-header">
     <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}!</h1>
-
+</div>
+<div>
+    {% if current_user.can(Permission.ADD) %}
+    {{ wtf.quick_form(form) }}
+    {% endif %}
+</div>
+<ul class="items">
+    {% for item in items %}
+    <li class="item">
+        <div class="item-content">
+            <div class="item-date">{{ moment(item.timestamp).fromNow() }}</div>
+            <div class="item-number"><a href="{{ url_for('.item', number=item.number) }}">{{ item.number }}</a></div>
+            <div class="item-name">{{ item.description }}</div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}
