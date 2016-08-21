@@ -1,3 +1,4 @@
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask.ext.login import UserMixin, AnonymousUserMixin
@@ -32,14 +33,6 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            # 'User': (Permission.FOLLOW |
-            #          Permission.COMMENT |
-            #          Permission.WRITE_ARTICLES, True),
-            # 'Moderator': (Permission.FOLLOW |
-            #               Permission.COMMENT |
-            #               Permission.WRITE_ARTICLES |
-            #               Permission.MODERATE_COMMENTS, False),
-            # 'Administrator': (0xff, False)
             'User': (Permission.VIEW |
                      Permission.ADD |
                      Permission.EDIT, True),
@@ -68,6 +61,7 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
+    items = db.relationship('Item', backref='author', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -166,3 +160,20 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+class Item(db.Model):
+    __tablename__ = 'items'
+    id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.String(24), unique=True)
+    name = db.Column(db.String(24))
+    count = db.Column(db.Integer)
+    price = db.Column(db.Float)
+    sn = db.Column(db.String(24), unique=True)
+    barcode = db.Column(db.String(64), unique=True)
+    description = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return '<Item %r' % self.name
