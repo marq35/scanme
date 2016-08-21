@@ -18,6 +18,9 @@ ul.items li.item {
 ul.items li.item:hover {
     background-color: #f0f0f0;
 }
+div.item-col {
+    display: inline-block;
+}
 div.item-date {
     float: right;
 }

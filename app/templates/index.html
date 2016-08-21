@@ -15,9 +15,13 @@
     {% for item in items %}
     <li class="item">
         <div class="item-content">
-            <div class="item-date">{{ moment(item.timestamp).fromNow() }}</div>
-            <div class="item-number"><a href="{{ url_for('.item', number=item.number) }}">{{ item.number }}</a></div>
-            <div class="item-name">{{ item.description }}</div>
+            <div class="item-col">{{ moment(item.timestamp).fromNow() }}</div>
+            <div class="item-col"><a href="{{ url_for('.item', number=item.number) }}">{{ item.number }}</a></div>
+            <div class="item-col">{{ item.name }}</div>
+            <div class="item-col">{{ item.count }}</div>
+            <div class="item-col">{{ item.price }}</div>
+            <div class="item-col">{{ item.sn }}</div>
+            <div class="item-col">{{ item.barcode }}</div>
         </div>
     </li>
     {% endfor %}
