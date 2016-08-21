@@ -4,14 +4,13 @@
 {% block title %}ScanMe{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}!</h1>
-</div>
+
 <div>
     {% if current_user.can(Permission.ADD) %}
     {{ wtf.quick_form(form) }}
     {% endif %}
 </div>
+{% if current_user.is_authenticated %}
 <ul class="items">
     {% for item in items %}
     <li class="item">
@@ -23,4 +22,10 @@
     </li>
     {% endfor %}
 </ul>
+{% else %}
+<div class="page-header">
+    <h1>Welcome in ScanMe App.</h1>
+    <p>If you want to check items please <a href="{{ url_for('auth.register') }}">register</a></p>
+</div>
+{% endif %}
 {% endblock %}
