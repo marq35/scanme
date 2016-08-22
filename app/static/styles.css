@@ -5,32 +5,3 @@
     min-height: 260px;
     margin-left: 280px;
 }
-ul.items {
-    list-style-type: none;
-    padding: 0px;
-    margin: 16px 0px 0px 0px;
-    border-top: 1px solid #e0e0e0;
-}
-ul.items li.item {
-    padding: 8px;
-    border-bottom: 1px solid #e0e0e0;
-}
-ul.items li.item:hover {
-    background-color: #f0f0f0;
-}
-div.item-col {
-    display: inline-block;
-}
-div.item-date {
-    float: right;
-}
-div.item-author {
-    font-weight: bold;
-}
-div.item-thumbnail {
-    position: absolute;
-}
-div.item-content {
-    margin-left: 48px;
-    min-height: 48px;
-}
