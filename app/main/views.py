@@ -1,4 +1,5 @@
-from flask import render_template, session, flash, redirect, url_for
+from flask import render_template, session, flash, redirect, url_for, request,\
+    current_app
 from flask.ext.login import login_required, current_user
 from .forms import ItemForm
 from .. import db
@@ -21,8 +22,14 @@ def index():
                     author=current_user._get_current_object())
         db.session.add(item)
         return redirect(url_for('.index'))
-    items = Item.query.order_by(Item.number).all()
-    return render_template('index.html', form=form, items=items)
+    #items = Item.query.order_by(Item.number).all()
+    page = request.args.get('page', 1, type=int)
+    pagination = Item.query.order_by(Item.number).paginate(
+        page, per_page=current_app.config['SCANME_POSTS_PER_PAGE'],
+        error_out=False)
+    items = pagination.items
+    return render_template('index.html', form=form, items=items,
+                           pagination=pagination)
 
 
 @main.route('/item/<number>')

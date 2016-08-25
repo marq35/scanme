@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
 
 {% block title %}ScanMe{% endblock %}
 
@@ -20,7 +21,7 @@
                 <th>Name:</th>
                 <th>Count:</th>
                 <th>Price:</th>
-                <th>S/N:</th>
+                <th>SN:</th>
                 <th>Barcode:</th>
                 <th>Added:</th>
             </tr>
@@ -40,7 +41,11 @@
         </tbody>
     </table>
 </div>
-
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
 </div>
 {% else %}
 <div class="page-header">
