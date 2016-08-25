@@ -21,8 +21,9 @@ def index():
                     author=current_user._get_current_object())
         db.session.add(item)
         return redirect(url_for('.index'))
-    items = Item.query.order_by(Item.timestamp.desc()).all()
+    items = Item.query.order_by(Item.number).all()
     return render_template('index.html', form=form, items=items)
+
 
 @main.route('/item/<number>')
 def item(number):

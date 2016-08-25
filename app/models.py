@@ -1,9 +1,10 @@
 from datetime import datetime
+import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import login_manager
-from flask import current_app
+from flask import current_app, request
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
@@ -62,6 +63,24 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     items = db.relationship('Item', backref='author', lazy='dynamic')
+
+    @staticmethod
+    def generate_fake(count=15):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            u = User(email=forgery_py.internet.email_address(),
+                     username=forgery_py.internet.user_name(True),
+                     password=forgery_py.lorem_ipsum.word(),
+                     confirmed=True)
+            db.session.add(u)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -174,6 +193,25 @@ class Item(db.Model):
     description = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    @staticmethod
+    def generate_fake(count=50):
+        from random import seed, randint
+        import forgery_py
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            u = User.query.offset(randint(0, user_count - 1)).first()
+            it = Item(number=forgery_py.address.phone(),
+                      name=forgery_py.lorem_ipsum.word(),
+                      count=1,
+                      price=10,
+                      description=forgery_py.lorem_ipsum.sentence(),
+                      timestamp=forgery_py.date.date(),
+                      author_id=u.id)
+            db.session.add(it)
+            db.session.commit()
 
     def __repr__(self):
         return '<Item %r' % self.name
