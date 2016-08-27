@@ -22,7 +22,7 @@ def index():
                     author=current_user._get_current_object())
         db.session.add(item)
         return redirect(url_for('.index'))
-    #items = Item.query.order_by(Item.number).all()
+    # items = Item.query.order_by(Item.number).all()
     page = request.args.get('page', 1, type=int)
     pagination = Item.query.order_by(Item.number).paginate(
         page, per_page=current_app.config['SCANME_POSTS_PER_PAGE'],
@@ -35,4 +35,4 @@ def index():
 @main.route('/item/<number>')
 def item(number):
     item = Item.query.filter_by(number=number).first_or_404()
-    return render_template('item.html', item=item)
+    return render_template('_item.html', item=item)
