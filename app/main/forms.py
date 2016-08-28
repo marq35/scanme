@@ -11,7 +11,7 @@ class ItemForm(Form):
     count = IntegerField('Item count', validators=[Required()])
     price = FloatField('Item prize per piece', validators=[Required()])
     sn = StringField('Item serial number')
-    barcode = StringField('Item barcode')
+    barcode = StringField('Item barcode', validators=[Required()])
     description = TextAreaField('Item description')
     submit = SubmitField('Submit')
 

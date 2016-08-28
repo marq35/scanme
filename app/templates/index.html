@@ -5,13 +5,12 @@
 {% block title %}ScanMe{% endblock %}
 
 {% block page_content %}
-
-<div>
-    {% if current_user.can(Permission.ADD) %}
-    {{ wtf.quick_form(form) }}
-    {% endif %}
-</div>
 {% if current_user.is_authenticated %}
+<div class="pull-right">
+    <a href="{{ url_for('.add') }}">
+        <span class="btn btn-success">Add</span>
+    </a>
+</div>
 <h2>Your warehouse:</h2>
 <div class="table-responsive">
     <table class="table">
@@ -23,19 +22,23 @@
                 <th>Price:</th>
                 <th>SN:</th>
                 <th>Barcode:</th>
-                <th>Added:</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             {% for item in items %}
             <tr>
-                <td><a href="{{ url_for('.item', number=item.number) }}">{{ item.number }}</td>
+                <td><a href="{{ url_for('.item', id=item.id) }}">{{ item.number }}</a></td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.count }}</td>
                 <td>{{ item.price }} $</td>
                 <td>{{ item.sn }}</td>
                 <td>{{ item.barcode }}</td>
-                <td>{{ moment(item.timestamp).fromNow() }}</td>
+                <td>
+                    <a href="{{ url_for('.edit', id=item.id) }}">
+                        <span class="label label-primary">Edit</span>
+                    </a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

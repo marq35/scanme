@@ -1,4 +1,4 @@
-from flask import render_template, session, flash, redirect, url_for, request,\
+from flask import render_template, abort, flash, redirect, url_for, request,\
     current_app
 from flask.ext.login import login_required, current_user
 from .forms import ItemForm
@@ -10,8 +10,20 @@ from . import main
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
+    page = request.args.get('page', 1, type=int)
+    pagination = Item.query.order_by(Item.number).paginate(
+        page, per_page=current_app.config['SCANME_POSTS_PER_PAGE'],
+        error_out=False)
+    items = pagination.items
+    return render_template('index.html', items=items,
+                           pagination=pagination)
+
+
+@main.route('/add', methods=['GET', 'POST'])
+@login_required
+def add():
     form = ItemForm()
-    if current_user.can(Permission.ADD) and form.validate_on_submit():
+    if form.validate_on_submit():
         item = Item(number=form.number.data,
                     name=form.name.data,
                     count=form.count.data,
@@ -21,18 +33,38 @@ def index():
                     description=form.description.data,
                     author=current_user._get_current_object())
         db.session.add(item)
+        flash('Item added.')
         return redirect(url_for('.index'))
-    # items = Item.query.order_by(Item.number).all()
-    page = request.args.get('page', 1, type=int)
-    pagination = Item.query.order_by(Item.number).paginate(
-        page, per_page=current_app.config['SCANME_POSTS_PER_PAGE'],
-        error_out=False)
-    items = pagination.items
-    return render_template('index.html', form=form, items=items,
-                           pagination=pagination)
+    return render_template('add.html', form=form)
 
 
-@main.route('/item/<number>')
-def item(number):
-    item = Item.query.filter_by(number=number).first_or_404()
-    return render_template('_item.html', item=item)
+@main.route('/item/<id>')
+def item(id):
+    item = Item.query.get_or_404(id)
+    return render_template('item.html', item=item)
+
+
+@main.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    item = Item.query.get_or_404(id)
+    form = ItemForm()
+    if form.validate_on_submit():
+        item.number = form.number.data
+        item.name = form.name.data
+        item.count = form.count.data
+        item.price = form.price.data
+        item.sn = form.sn.data
+        item.barcode = form.barcode.data
+        item.description = form.description.data
+        db.session.add(item)
+        flash('The item has been updated.')
+        return redirect(url_for('.item', id=item.id))
+    form.number.data = item.number
+    form.name.data = item.name
+    form.count.data = item.count
+    form.price.data = item.price
+    form.sn.data = item.sn
+    form.barcode.data = item.barcode
+    form.description.data = item.description
+    return render_template('edit_item.html', form=form)
