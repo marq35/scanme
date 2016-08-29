@@ -6,6 +6,7 @@ from .. import db
 from ..models import Permission, Role, User, Item
 from ..decorators import admin_required
 from . import main
+import random
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -35,6 +36,7 @@ def add():
         db.session.add(item)
         flash('Item added.')
         return redirect(url_for('.index'))
+    form.barcode.data = random.randrange(1111111111111, 9999999999999)
     return render_template('add.html', form=form)
 
 
