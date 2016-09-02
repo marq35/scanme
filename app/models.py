@@ -1,18 +1,15 @@
 from datetime import datetime
-import hashlib
+import random
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import login_manager
-from flask import current_app, request
+from barcode_gen import generate_barcode
+from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 class Permission:
-    # FOLLOW = 0x01
-    # COMMENT = 0x02
-    # WRITE_ARTICLES = 0x04
-    # MODERATE_COMMENTS = 0x08
     VIEW = 0x01
     ADD = 0x02
     EDIT = 0x04
@@ -205,6 +202,7 @@ class Item(db.Model):
         seed()
         user_count = User.query.count()
         for i in range(count):
+            bc_value = str(random.randrange(11111111, 99999999))
             u = User.query.offset(randint(0, user_count - 1)).first()
             it = Item(number=forgery_py.address.phone(),
                       name=forgery_py.lorem_ipsum.word(),
@@ -212,9 +210,12 @@ class Item(db.Model):
                       price=10,
                       description=forgery_py.lorem_ipsum.sentence(),
                       timestamp=forgery_py.date.date(),
+                      barcode=bc_value,
                       author_id=u.id)
             db.session.add(it)
             db.session.commit()
+            generate_barcode(bc_value)
+
 
     def __repr__(self):
         return '<Item %r' % self.name
