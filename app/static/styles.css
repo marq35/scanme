@@ -8,3 +8,7 @@
 .pull-right {
   float: right !important;
 }
+.item-text {
+    color: blue;
+    font-size: 18px;
+}

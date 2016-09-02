@@ -3,9 +3,17 @@
 {% block title %}ScanMe - {{ item.name }}{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <div class="profile-header">
-        <h1>{{ item.number }}</h1>
-    </div>
+<div class="panel panel-default">
+      <div class="panel-heading">Item view:</div>
+      <div class="panel-body">
+        <div class="item-text">Number: {{ item.number }}</div>
+        <div class="item-text">Name: {{ item.name }}</div>
+        <div class="item-text">Count: {{ item.count }}</div>
+        <div class="item-text">Price: {{ item.price }} $</div>
+        <div class="item-text">S/N: {{ item.sn }}</div>
+        <div class="item-text">Barcode: {{ item.barcode }}</div>
+        <div class="item-text">Added: {{ moment(item.timestamp).fromNow() }}</div>
+          <div class="item-barcode"><img src="../static/barcodes/{{ item.barcode }}.png" width="200px" height="auto"></div>
+      </div>
 </div>
 {% endblock %}
