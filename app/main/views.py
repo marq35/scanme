@@ -3,6 +3,7 @@ from flask import render_template, abort, flash, redirect, url_for, request,\
 from flask.ext.login import login_required, current_user
 from .forms import ItemForm
 from .. import db
+from ..barcode_gen import generate_barcode
 from ..models import Permission, Role, User, Item
 from ..decorators import admin_required
 from . import main
@@ -34,9 +35,11 @@ def add():
                     description=form.description.data,
                     author=current_user._get_current_object())
         db.session.add(item)
+        db.session.commit()
+        generate_barcode(form.barcode.data)
         flash('Item added.')
         return redirect(url_for('.index'))
-    form.barcode.data = random.randrange(1111111111111, 9999999999999)
+    form.barcode.data = random.randrange(11111111, 99999999)
     return render_template('add.html', form=form)
 
 
