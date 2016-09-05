@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}ScanMe - Delete Item{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Delete Item</h1>
+</div>
+<form method="post" action="{{ url_for('remove', id=item.id) }}">
+  <label>Do you really want to delete item: {{ item.name }}?</label>
+  <button type="submit">Delete</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{% endblock %}
