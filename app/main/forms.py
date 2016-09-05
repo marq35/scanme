@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField, IntegerField, FloatField
-from wtforms.validators import Required, Length, Regexp
+from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField, IntegerField, FloatField, Label
+from wtforms.validators import Required
 from wtforms import ValidationError
 from ..models import Item, User, Role
 

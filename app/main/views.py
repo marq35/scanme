@@ -3,7 +3,7 @@ from flask import render_template, abort, flash, redirect, url_for, request,\
 from flask.ext.login import login_required, current_user
 from .forms import ItemForm
 from .. import db
-from ..barcode_gen import generate_barcode
+from ..barcode_gen import generate_barcode, delete_barcode, barcode_file_exists
 from ..models import Permission, Role, User, Item
 from ..decorators import admin_required
 from . import main
@@ -73,3 +73,15 @@ def edit(id):
     form.barcode.data = item.barcode
     form.description.data = item.description
     return render_template('edit_item.html', form=form)
+
+
+@main.route('/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def delete(id):
+    item = Item.query.get_or_404(id)
+    Item.query.filter(Item.id == item.id).delete()
+    barcode_value = '{0}.png'.format(item.barcode)
+    if barcode_file_exists(barcode_value):
+        delete_barcode(barcode_value)
+    flash('Item deleted!!!')
+    return redirect(url_for('.index'))
