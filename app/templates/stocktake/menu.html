@@ -1,7 +1,50 @@
 {% extends "base.html" %}
+{% import "_macros.html" as macros %}
 
-{% block title %}ScanMe - Stocktake{% endblock %}
+{% block title %}ScanMe - Stocktakes{% endblock %}
 
 {% block page_content %}
 <h1>Current Stocktakes</h1>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name:</th>
+                <th>Start Date:</th>
+                <th>End Date:</th>
+                <th>Author:</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in stocks %}
+            <tr>
+                <td><a href="{{ url_for('.menu', id=stock.id) }}">{{ stock.name }}</a></td>
+                <td>{{ stock.start_date }}</td>
+                <td>
+                    {% if stock.end_date %}
+                    {{ stock.end_date }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if stock.author_id %}
+                    {{ stock.author_id }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('.delete', id=stock.id) }}">
+                        <span class="label label-danger">Delete</span>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if st_count>=10 %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.menu') }}
+</div>
+{% endif %}
+
 {% endblock %}
