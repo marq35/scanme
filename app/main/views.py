@@ -14,7 +14,7 @@ import random
 def index():
     page = request.args.get('page', 1, type=int)
     pagination = Item.query.order_by(Item.number).paginate(
-        page, per_page=current_app.config['SCANME_POSTS_PER_PAGE'],
+        page, per_page=current_app.config['SCANME_ITEMS_PER_PAGE'],
         error_out=False)
     items = pagination.items
     return render_template('index.html', items=items,

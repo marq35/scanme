@@ -14,7 +14,8 @@ class Config:
     FLASKY_MAIL_SUBJECT_PREFIX = '[ScanMe]'
     FLASKY_MAIL_SENDER = 'ScanMe Admin <marq35@gmail.com>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
-    SCANME_POSTS_PER_PAGE = 12
+    SCANME_ITEMS_PER_PAGE = 12
+    SCANME_STOCKS_PER_PAGE = 10
 
 
     @staticmethod
