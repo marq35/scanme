@@ -216,6 +216,27 @@ class Item(db.Model):
             db.session.commit()
             generate_barcode(bc_value)
 
-
     def __repr__(self):
         return '<Item %r' % self.name
+
+
+class Stocktake(db.Model):
+    __tablename__ = 'stocktakes'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(24))
+    start_date = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return '<Stocktake %r' % self.name
+
+    @staticmethod
+    def generate_fake():
+        from random import seed
+        import forgery_py
+
+        seed()
+        st = Stocktake(name=forgery_py.lorem_ipsum.word(),
+                       start_date=forgery_py.date.date())
+        db.session.add(st)
+        db.sesssion.commit()
