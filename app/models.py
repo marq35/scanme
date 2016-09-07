@@ -225,6 +225,8 @@ class Stocktake(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(24))
     start_date = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+    end_date = db.Column(db.DateTime, index=True)
+    is_ended = db.Column(db.Boolean, default=False)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
@@ -239,4 +241,4 @@ class Stocktake(db.Model):
         st = Stocktake(name=forgery_py.lorem_ipsum.word(),
                        start_date=forgery_py.date.date())
         db.session.add(st)
-        db.sesssion.commit()
+        db.session.commit()
