@@ -4,6 +4,12 @@
 {% block title %}ScanMe - Stocktakes{% endblock %}
 
 {% block page_content %}
+{% if current_user.is_authenticated %}
+<div class="pull-right">
+    <a href="{{ url_for('.add') }}">
+        <span class="btn btn-success">Add</span>
+    </a>
+</div>
 <h1>Current Stocktakes</h1>
 <div class="table-responsive">
     <table class="table">
@@ -45,6 +51,7 @@
 <div class="pagination">
     {{ macros.pagination_widget(pagination, '.menu') }}
 </div>
+{% endif %}
 {% endif %}
 
 {% endblock %}
