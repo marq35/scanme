@@ -32,11 +32,7 @@
                     {{ stock.end_date }}
                     {% endif %}
                 </td>
-                <td>
-                    {% if stock.author_id %}
-                    {{ stock.author_id }}
-                    {% endif %}
-                </td>
+                <td></td>
                 <td>
                     <a href="{{ url_for('.delete', id=stock.id) }}">
                         <span class="label label-danger">Delete</span>

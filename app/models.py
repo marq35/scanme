@@ -242,3 +242,21 @@ class Stocktake(db.Model):
                        start_date=forgery_py.date.date())
         db.session.add(st)
         db.session.commit()
+
+
+class StItem(db.Model):
+    __tablename__ = 'stitems'
+    id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.String(24), unique=True)
+    name = db.Column(db.String(24))
+    count = db.Column(db.Integer)
+    price = db.Column(db.Float)
+    sn = db.Column(db.String(24), unique=True)
+    barcode = db.Column(db.String(64), unique=True)
+    description = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    is_scanned = db.Column(db.Boolean, default=False)
+    stocktake = db.Column(db.Integer, db.ForeignKey('stocktakes.id'))
+
+    def __repr__(self):
+        return '<StItem %r' % self.name
