@@ -219,6 +219,22 @@ class Item(db.Model):
     def __repr__(self):
         return '<Item %r' % self.name
 
+    @staticmethod
+    def get_count():
+        return Item.query.count()
+
+    @staticmethod
+    def get_items_id_list():
+        items = Item.get_count()
+        item_list = []
+        for item in items:
+            item_list.append(item.id)
+        return item_list
+
+    @staticmethod
+    def get_items():
+        return Item.query.all()
+
 
 class Stocktake(db.Model):
     __tablename__ = 'stocktakes'
@@ -247,14 +263,14 @@ class Stocktake(db.Model):
 class StItem(db.Model):
     __tablename__ = 'stitems'
     id = db.Column(db.Integer, primary_key=True)
-    number = db.Column(db.String(24), unique=True)
+    number = db.Column(db.String(24))
     name = db.Column(db.String(24))
     count = db.Column(db.Integer)
     price = db.Column(db.Float)
-    sn = db.Column(db.String(24), unique=True)
-    barcode = db.Column(db.String(64), unique=True)
+    sn = db.Column(db.String(24))
+    barcode = db.Column(db.String(64))
     description = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime)
     is_scanned = db.Column(db.Boolean, default=False)
     stocktake = db.Column(db.Integer, db.ForeignKey('stocktakes.id'))
 

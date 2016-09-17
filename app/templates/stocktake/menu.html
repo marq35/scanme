@@ -25,7 +25,7 @@
         <tbody>
             {% for stock in stocks %}
             <tr>
-                <td><a href="{{ url_for('.menu', id=stock.id) }}">{{ stock.name }}</a></td>
+                <td><a href="{{ url_for('.stitem', id=stock.id) }}">{{ stock.name }}</a></td>
                 <td>{{ stock.start_date }}</td>
                 <td>
                     {% if stock.end_date %}
@@ -43,11 +43,9 @@
         </tbody>
     </table>
 </div>
-{% if st_count>=10 %}
 <div class="pagination">
     {{ macros.pagination_widget(pagination, '.menu') }}
 </div>
-{% endif %}
 {% endif %}
 
 {% endblock %}
