@@ -2,9 +2,11 @@ from flask import render_template, abort, flash, redirect, url_for, request,\
     current_app
 from flask.ext.login import login_required, current_user
 from . import stocktake
-from .forms import StocktakeForm
+from .forms import StocktakeForm, UploadCsvFileForm
 from .. import db
 from ..models import User, Stocktake, Item, StItem
+from werkzeug import secure_filename
+import os
 
 
 @login_required
@@ -58,3 +60,16 @@ def delete(id):
 def stitem(id):
     stitems = StItem.query.filter_by(stocktake=id)
     return render_template('stocktake/stitem.html', stitems=stitems)
+
+
+@login_required
+@stocktake.route('/upload', methods=['GET', 'POST'])
+def upload():
+    form = UploadCsvFileForm()
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save('app/uploads/' + secure_filename(f.filename))
+        flash('Uploaded')
+        return redirect(url_for('.menu'))
+    return render_template('stocktake/upload.html', form=form)
+

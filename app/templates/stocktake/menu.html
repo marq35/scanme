@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "_macros.html" as macros %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}ScanMe - Stocktakes{% endblock %}
 
@@ -8,6 +9,9 @@
 <div class="pull-right">
     <a href="{{ url_for('.add') }}">
         <span class="btn btn-success">Add</span>
+    </a>
+    <a href="{{ url_for('.upload') }}">
+        <span class="btn btn-success">Upload</span>
     </a>
 </div>
 <h1>Current Stocktakes</h1>
@@ -18,7 +22,7 @@
                 <th>Name:</th>
                 <th>Start Date:</th>
                 <th>End Date:</th>
-                <th>Author:</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
