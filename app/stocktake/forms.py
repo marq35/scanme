@@ -1,9 +1,8 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, SubmitField
-import re
+from wtforms import StringField, SubmitField, SelectField
 from flask_wtf.file import FileField, FileRequired
-from wtforms import ValidationError
-from wtforms.validators import Required
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
+from wtforms.validators import Required, regexp
 
 
 class StocktakeForm(Form):
@@ -12,9 +11,8 @@ class StocktakeForm(Form):
 
 
 class UploadCsvFileForm(Form):
-    file = FileField('CSV file', validators=[FileRequired()])
-    # submit = SubmitField('Choose file')
-    #image = FileField('File', validators=[regexp(r'.*.csv$')])
+    file = FileField('Choose CSV file:', validators=[FileRequired(), regexp(r'.*.csv$')])
+    stock = SelectField()
     submit = SubmitField('upload')
 
 

@@ -4,7 +4,8 @@ from flask.ext.login import login_required, current_user
 from . import stocktake
 from .forms import StocktakeForm, UploadCsvFileForm
 from .. import db
-from ..models import User, Stocktake, Item, StItem
+from ..models import Stocktake, Item, StItem
+from ..csv_parser import get_barcodes
 from werkzeug import secure_filename
 import os
 
@@ -66,10 +67,17 @@ def stitem(id):
 @stocktake.route('/upload', methods=['GET', 'POST'])
 def upload():
     form = UploadCsvFileForm()
+    form.stock.choices = [(i.id, i.name) for i in Stocktake.query.all()]
     if request.method == 'POST':
         f = request.files['file']
-        f.save('app/uploads/' + secure_filename(f.filename))
-        flash('Uploaded')
-        return redirect(url_for('.menu'))
+        f.save('app/static/uploads/' + secure_filename(f.filename))
+        barcodes = get_barcodes('app/static/uploads/' + secure_filename(f.filename))
+        for i in barcodes:
+            current_item = StItem.query.filter_by(barcode=i).filter_by(stocktake=form.stock.data).first()
+            if current_item:
+                current_item.is_scanned = True
+        os.remove('app/static/uploads/' + secure_filename(f.filename))
+        flash('Stock updated with new scanned items.')
+        return redirect(url_for('.stitem', id=form.stock.data))
     return render_template('stocktake/upload.html', form=form)
 
