@@ -19,14 +19,14 @@
         </thead>
         <tbody>
             {% for stitem in stitems %}
-            <tr>
-                <td>{{ stitem.number }}</td>
-                <td>{{ stitem.name }}</td>
-                <td>{{ stitem.count }}</td>
-                <td>{{ stitem.price }} $</td>
-                <td>{{ stitem.sn }}</td>
-                <td>{{ stitem.barcode }}</td>
-            </tr>
+                <tr>
+                    <td>{{ stitem.number }}</td>
+                    <td>{{ stitem.name }}</td>
+                    <td>{{ stitem.count }}</td>
+                    <td>{{ stitem.price }} $</td>
+                    <td>{{ stitem.sn }}</td>
+                    <td>{{ stitem.barcode }}</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
