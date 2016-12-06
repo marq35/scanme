@@ -1,4 +1,4 @@
-This is app created by me - Marcin Maciaszek a.k.a. marq
+This is app created by me - marq
 You can use it and share it if you want!!!
 Works only on Unix workstations!!!
 
